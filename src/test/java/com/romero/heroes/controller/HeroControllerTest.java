@@ -1,6 +1,5 @@
 package com.romero.heroes.controller;
 
-import com.romero.heroes.dto.HeroDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +9,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,9 +25,16 @@ public class HeroControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void getAllHeroesTest() throws Exception {
+    public void whenRequestToGetAllHeroes_ShouldReturnAllHeroes() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(HEROES_PATH)
                 .with(SecurityMockMvcRequestPostProcessors.httpBasic(USER, PASSWORD)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void whenRequestToCreateHeroShouldReturnHero() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(HEROES_PATH)
+                        .with(SecurityMockMvcRequestPostProcessors.httpBasic(USER, PASSWORD)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 

@@ -1,15 +1,12 @@
 package com.romero.heroes.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class HeroDTO {
     private String name;
-    private String ability;
 }
