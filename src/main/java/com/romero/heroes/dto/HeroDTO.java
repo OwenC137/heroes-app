@@ -9,4 +9,5 @@ import lombok.*;
 @Builder
 public class HeroDTO {
     private String name;
+    private Integer id;
 }

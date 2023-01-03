@@ -6,15 +6,20 @@ import com.romero.heroes.repository.HeroRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SpringBootTest
-public class GetHeroesUseCaseTest {
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest()
+public class GetHeroesUseCaseTest{
     @Autowired
     private GetHeroesUseCase getHeroesUseCase;
 
@@ -34,15 +39,14 @@ public class GetHeroesUseCaseTest {
     @Test
     public void whenTryRetrieveHeroById_ShouldReturnOneHero(){
 
-        repository.save(
+        final HeroEntity savedHero = repository.save(
                 HeroEntity.builder()
-                        .id(1)
                         .name(HEROES.get(0))
                         .build()
         );
 
         List<HeroDTO> heroes = getHeroesUseCase.execute(
-                SearchParameters.builder().id(1).build()
+                SearchParameters.builder().id(savedHero.getId()).build()
         );
 
         Assertions.assertEquals(1, heroes.size());
