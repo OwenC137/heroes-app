@@ -32,7 +32,7 @@ public class GetHeroesUseCaseTest {
     }
 
     @Test
-    public void whenExecuteUseCaseToRetrieveHeroById_ShouldReturnOneHero(){
+    public void whenTryRetrieveHeroById_ShouldReturnOneHero(){
 
         repository.save(
                 HeroEntity.builder()
@@ -50,7 +50,18 @@ public class GetHeroesUseCaseTest {
     }
 
     @Test
-    public void whenTryRetrieveHeroesLikeName_ShouldRetrieveHeroesWithMatchedPartialOrFullName(){
+    public void whenTryToGetHeroesWithNonExistentID(){
+        List<HeroDTO> heroes = getHeroesUseCase.execute(
+                SearchParameters.builder()
+                        .id(Integer.MAX_VALUE)
+                        .build()
+        );
+
+        Assertions.assertEquals(0, heroes.size());
+    }
+
+    @Test
+    public void whenTryToGetHeroesLikeName_ShouldRetrieveHeroesWithMatchedPartialOrFullName(){
         repository.saveAll(
                 HEROES.stream().map( heroName -> HeroEntity.builder().name(heroName).build())
                         .collect(Collectors.toList())
@@ -59,5 +70,15 @@ public class GetHeroesUseCaseTest {
         List<HeroDTO> heroes = getHeroesUseCase.execute(SearchParameters.builder().name("ANT").build());
         Assertions.assertEquals(1, heroes.size());
         Assertions.assertEquals(ANT_MAN, heroes.get(0).getName());
+    }
+
+    @Test
+    public void whenTryToGetHeroWithHeroNameOutOfMatch_ShouldRetrieveEmptyListOfHeroes(){
+        repository.saveAll(
+                HEROES.stream().map( heroName -> HeroEntity.builder().name(heroName).build())
+                        .collect(Collectors.toList())
+        );
+        List<HeroDTO> heroes = getHeroesUseCase.execute(SearchParameters.builder().name("Rick").build());
+        Assertions.assertEquals(0, heroes.size());
     }
 }
