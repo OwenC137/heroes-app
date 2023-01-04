@@ -42,7 +42,7 @@ public class HeroController {
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/create")
+    @PostMapping(consumes = {"application/json"})
     public ResponseEntity<HeroDTO> createHero(@RequestBody CreateHeroRequestDTO request){
         return createHeroUseCase.execute(request.getName())
                 .map(heroDTO -> new ResponseEntity<>(heroDTO, HttpStatus.CREATED))
