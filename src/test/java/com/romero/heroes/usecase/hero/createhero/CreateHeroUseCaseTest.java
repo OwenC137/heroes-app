@@ -22,7 +22,7 @@ public class CreateHeroUseCaseTest{
     @Autowired
     private HeroRepository repository;
 
-    private static String SUPERMAN = "SUPERMAN";
+    private static final String SUPERMAN = "SUPERMAN";
 
 
     @BeforeEach
