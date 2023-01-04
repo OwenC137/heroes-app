@@ -2,6 +2,7 @@ package com.romero.heroes.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.romero.heroes.controller.dto.CreateHeroRequestDTO;
+import com.romero.heroes.controller.dto.UpdateHeroRequestDTO;
 import com.romero.heroes.entity.HeroEntity;
 import com.romero.heroes.repository.HeroRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -127,5 +128,37 @@ public class HeroControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(HERO_NAME));
     }
+
+    @Test
+    public void whenRequestToUpdateHeroShouldReturnUpdatedHero() throws Exception {
+
+        final HeroEntity HERO = repository.findAll().get(0);
+        final String HERO_UPDATED_NAME = "MAD MAX";
+        final UpdateHeroRequestDTO requestDTO = UpdateHeroRequestDTO.builder()
+                .name(HERO_UPDATED_NAME)
+                .build();
+        final String PATH = HEROES_PATH_BY_ID.replace("{id}", HERO.getId().toString());
+        mockMvc.perform(MockMvcRequestBuilders.patch(PATH)
+                        .content(objectMapper.writeValueAsString(requestDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.httpBasic(USER, PASSWORD)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(HERO_UPDATED_NAME));
+        //reset on db
+        repository.save(HERO);
+    }
+
+    @Test
+    public void whenRequestToDeleteHeroShouldReturn_200_OK() throws Exception {
+
+        final HeroEntity HERO = repository.save(HeroEntity.builder().name("DELETE HERO").build());
+        final String PATH = HEROES_PATH_BY_ID.replace("{id}", HERO.getId().toString());
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.httpBasic(USER, PASSWORD)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
 
 }
