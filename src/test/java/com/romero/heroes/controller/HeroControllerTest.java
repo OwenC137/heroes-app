@@ -159,6 +159,16 @@ public class HeroControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
+    public void whenRequestToDeleteHeroButHeroDoesntExistShouldReturn_404_NOT_FOUND() throws Exception {
+
+        final String PATH = HEROES_PATH_BY_ID.replace("{id}", String.valueOf(Integer.MAX_VALUE));
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.httpBasic(USER, PASSWORD)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 
 
 }

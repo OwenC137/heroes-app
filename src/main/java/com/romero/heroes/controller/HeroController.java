@@ -3,12 +3,14 @@ package com.romero.heroes.controller;
 import com.romero.heroes.controller.dto.CreateHeroRequestDTO;
 import com.romero.heroes.controller.dto.UpdateHeroRequestDTO;
 import com.romero.heroes.dto.HeroDTO;
+import com.romero.heroes.usecase.hero.HeroOperationResult;
 import com.romero.heroes.usecase.hero.createhero.CreateHeroUseCase;
 import com.romero.heroes.usecase.hero.deletehero.DeleteHeroUseCase;
 import com.romero.heroes.usecase.hero.getheroes.GetHeroesUseCase;
 import com.romero.heroes.usecase.hero.getheroes.SearchParameters;
 import com.romero.heroes.usecase.hero.updatehero.UpdateHeroUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,14 +61,13 @@ public class HeroController {
 
     @PatchMapping(value = "/{id}",consumes = {"application/json"})
     public ResponseEntity<HeroDTO> updateHero(@PathVariable Integer id,@RequestBody UpdateHeroRequestDTO request){
-        return updateHeroUseCase.execute(HeroDTO.builder().id(id).name(request.getName()).build())
-                .map(heroDTO -> new ResponseEntity<>(heroDTO, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY));
+        final Pair<HeroOperationResult, HeroDTO> result = updateHeroUseCase.execute(HeroDTO.builder().id(id).name(request.getName()).build());
+        return new ResponseEntity<>(result.getSecond(), result.getFirst().getHttpStatus());
     }
 
     @DeleteMapping(value = "/{id}",consumes = {"application/json"})
-    @ResponseStatus(HttpStatus.OK)
-    public void updateHero(@PathVariable Integer id){
-        deleteHeroUseCase.execute(id);
+    public ResponseEntity updateHero(@PathVariable Integer id){
+        final HeroOperationResult result = deleteHeroUseCase.execute(id);
+        return new ResponseEntity(result.getHttpStatus());
     }
 }
