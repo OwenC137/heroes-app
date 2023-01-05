@@ -1,32 +1,23 @@
 package com.romero.heroes.usecase.hero.deletehero;
 
+import com.romero.heroes.entity.HeroEntity;
 import com.romero.heroes.repository.HeroRepository;
 import com.romero.heroes.usecase.UseCase;
-import com.romero.heroes.usecase.hero.HeroOperationResult;
+import com.romero.heroes.usecase.hero.exception.HeroNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
-public class DeleteHeroUseCase implements UseCase<HeroOperationResult, Integer> {
+public class DeleteHeroUseCase implements UseCase<Void, Integer> {
 
     @Autowired
     private HeroRepository repository;
 
     @Override
-    public HeroOperationResult execute(Integer param) {
-        return repository.findById(param)
-                .map(hero -> tryDeleteHero(hero.getId()))
-                .orElse(HeroOperationResult.NOT_FOUND);
-    }
-
-    private HeroOperationResult tryDeleteHero(Integer id){
-        try {
-            repository.deleteById(id);
-            return HeroOperationResult.OK;
-        }catch (Exception e){
-            return HeroOperationResult.UNKNOWN;
-        }
+    public Void execute(Integer param) {
+        final HeroEntity hero = repository.findById(param)
+                .orElseThrow(HeroNotFoundException::new);
+        repository.deleteById(hero.getId());
+        return null;
     }
 }

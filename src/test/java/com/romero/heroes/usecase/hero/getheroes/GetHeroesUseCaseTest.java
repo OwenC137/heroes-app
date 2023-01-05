@@ -3,13 +3,13 @@ package com.romero.heroes.usecase.hero.getheroes;
 import com.romero.heroes.dto.HeroDTO;
 import com.romero.heroes.entity.HeroEntity;
 import com.romero.heroes.repository.HeroRepository;
+import com.romero.heroes.usecase.hero.exception.HeroNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -54,18 +54,16 @@ public class GetHeroesUseCaseTest{
     }
 
     @Test
-    public void whenTryToGetHeroesWithNonExistentID(){
-        List<HeroDTO> heroes = getHeroesUseCase.execute(
+    public void whenTryToGetHeroesWithNonExistentID()  {
+        Assertions.assertThrowsExactly(HeroNotFoundException.class, () -> getHeroesUseCase.execute(
                 SearchParameters.builder()
                         .id(Integer.MAX_VALUE)
                         .build()
-        );
-
-        Assertions.assertEquals(0, heroes.size());
+        ));
     }
 
     @Test
-    public void whenTryToGetHeroesLikeName_ShouldRetrieveHeroesWithMatchedPartialOrFullName(){
+    public void whenTryToGetHeroesLikeName_ShouldRetrieveHeroesWithMatchedPartialOrFullName() {
         repository.saveAll(
                 HEROES.stream().map( heroName -> HeroEntity.builder().name(heroName).build())
                         .collect(Collectors.toList())
@@ -77,7 +75,7 @@ public class GetHeroesUseCaseTest{
     }
 
     @Test
-    public void whenTryToGetHeroWithHeroNameOutOfMatch_ShouldRetrieveEmptyListOfHeroes(){
+    public void whenTryToGetHeroWithHeroNameOutOfMatch_ShouldRetrieveEmptyListOfHeroes() {
         repository.saveAll(
                 HEROES.stream().map( heroName -> HeroEntity.builder().name(heroName).build())
                         .collect(Collectors.toList())
