@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -168,7 +167,4 @@ public class HeroControllerTest {
                         .with(SecurityMockMvcRequestPostProcessors.httpBasic(USER, PASSWORD)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-
-
-
 }

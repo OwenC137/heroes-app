@@ -6,6 +6,7 @@ import com.romero.heroes.usecase.UseCase;
 import com.romero.heroes.usecase.hero.common.HeroUtils;
 import com.romero.heroes.usecase.hero.exception.HeroNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

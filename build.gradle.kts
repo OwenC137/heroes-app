@@ -20,6 +20,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.projectlombok:lombok:1.18.24")
 	runtimeOnly("com.h2database:h2")
 	annotationProcessor("org.projectlombok:lombok:1.18.24")

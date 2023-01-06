@@ -6,3 +6,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8080:8080
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    build: .
+    restart: always
+    environment:
+      - REDIS_HOSTS=redis
+    ports:
+      - 8081:8081

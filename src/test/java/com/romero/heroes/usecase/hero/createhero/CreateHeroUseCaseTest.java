@@ -32,9 +32,8 @@ public class CreateHeroUseCaseTest{
 
     @Test
     public void whenTryToCreateHero_ShouldRetrieveOptionalHeroDTO(){
-        Optional<HeroDTO> hero = createHeroUseCase.execute(SUPERMAN);
-        Assertions.assertTrue(hero.isPresent());
-        Assertions.assertEquals(SUPERMAN, hero.get().getName());
+        HeroDTO hero = createHeroUseCase.execute(SUPERMAN);
+        Assertions.assertEquals(SUPERMAN, hero.getName());
     }
 
 }
