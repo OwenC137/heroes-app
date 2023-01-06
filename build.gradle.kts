@@ -2,7 +2,6 @@ plugins {
 	java
 	id("org.springframework.boot") version "2.7.8-SNAPSHOT"
 	id("io.spring.dependency-management") version "1.0.15.RELEASE"
-	id("org.springframework.cloud.contract") version "3.1.5"
 }
 
 group = "com.romero"
@@ -28,17 +27,7 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test")
 }
 
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-	}
-}
-
 tasks.withType<Test> {
-	useJUnitPlatform()
-}
-
-tasks.contractTest {
 	useJUnitPlatform()
 }
 
